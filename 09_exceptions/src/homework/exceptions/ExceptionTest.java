@@ -25,7 +25,7 @@ public class ExceptionTest {
 
     @DisplayName("getPower test")
     @Test
-    void getPowerTest() throws Exception {
+    void getPowerTest() {
         assertDoesNotThrow(() -> ExceptionTask.getPower(10, 10));
         assertDoesNotThrow(() -> ExceptionTask.getPower(1, 1));
         assertNotEquals(-1L, ExceptionTask.getPower(1, 1));

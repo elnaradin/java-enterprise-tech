@@ -51,14 +51,14 @@ class CollectionsTest {
 
     @Test
     void foldl() {
-        Integer result = Collections.foldl((a, b) ->  (int)(Math.pow(a, 2)/b), 2, a);
-        assertEquals(2420, result);
+        Integer result = Collections.foldl((a, b) -> (a - b) + 2 * a, 1, a);
+        assertEquals(64, result);
     }
 
     @Test
     void foldr() {
-        Integer result = Collections.foldr((a, b) -> (int)(Math.pow(a, 2)/b), 2, a);
-        assertEquals(0, result);
+        Integer result = Collections.foldr((a, b) -> (a - b) + 2 * a, 5, a);
+        assertEquals(668, result);
     }
 
 

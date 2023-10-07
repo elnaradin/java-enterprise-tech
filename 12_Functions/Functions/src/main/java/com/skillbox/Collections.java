@@ -42,7 +42,7 @@ public class Collections {
         return takeWhile(p.not(), a);
     }
 
-    public static <T> T foldl(Function2<T> f, T initial, Iterable<T> a) {
+    public static <T> T foldl(Function2<T, T, T> f, T initial, Iterable<T> a) {
         T result = initial;
         for (T t : a) {
             result = f.apply(result, t);
@@ -50,7 +50,7 @@ public class Collections {
         return result;
     }
 
-    public static <T> T foldr(Function2<T> f, T initial, Iterable<T> a) {
+    public static <T> T foldr(Function2<T, T, T> f, T initial, Iterable<T> a) {
         T result = initial;
         ListIterator<T> li = getListIterator(a);
         while (li.hasPrevious()) {

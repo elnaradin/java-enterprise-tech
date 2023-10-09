@@ -2,9 +2,9 @@ package org.example;
 
 import org.example.annotation.After;
 import org.example.annotation.Before;
-import org.example.annotation.RunWithCustomTestFrameworkRunner;
+import org.example.annotation.RunWithMyTestFrameworkRunner;
 import org.example.annotation.Test;
-@RunWithCustomTestFrameworkRunner
+@RunWithMyTestFrameworkRunner
 public class CalculatorTest {
     @Test
     public void testSumSuccess() throws AssertionException{

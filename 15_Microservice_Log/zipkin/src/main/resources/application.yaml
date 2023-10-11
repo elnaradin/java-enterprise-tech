@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: zipkin
+server:
+  port: 9411
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+armeria:
+  ports:
+  - port: 9411

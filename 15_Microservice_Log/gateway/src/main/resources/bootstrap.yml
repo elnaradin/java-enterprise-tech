@@ -10,6 +10,12 @@ spring:
       fail-fast: true
       discovery:
         service-id: discovery
+    gateway:
+      routes:
+        - id: order
+          uri: lb://order-service
+          predicates:
+            - Path=/api/order/**
 
 eureka:
   client:

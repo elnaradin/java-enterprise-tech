@@ -2,9 +2,9 @@ package com.example.service;
 
 import com.example.persist.Picture;
 import com.example.persist.PictureRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +21,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 class PictureServiceImpl implements PictureService {
 
     private static final Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
 
     private static final Random rnd = new Random();
-
-    @Autowired
-    private PictureRepository pictureRepository;
+    private final PictureRepository pictureRepository;
 
     @Value("${path.to.picture.storage}")
     private String pathToPictureStorage;
@@ -97,6 +96,7 @@ class PictureServiceImpl implements PictureService {
                     } catch (IOException ex) {
                         throw new IllegalStateException("Error in time of picture remove", ex);
                     }
+                    pictureRepository.deleteById(id);
                 });
     }
 

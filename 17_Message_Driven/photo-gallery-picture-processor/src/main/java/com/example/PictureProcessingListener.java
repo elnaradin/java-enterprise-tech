@@ -2,16 +2,19 @@ package com.example;
 
 import com.example.service.PictureService;
 import com.example.service.SavedPictureDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
+@RabbitListener(queues = "picture.queue")
 public class PictureProcessingListener {
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
 
-    // TODO настроить подписку на события (сообщения) о новых загруженных изображениях
+    @RabbitHandler
     public void onNewPicture(SavedPictureDto savedPictureDto) {
         pictureService.processPicture(savedPictureDto);
     }

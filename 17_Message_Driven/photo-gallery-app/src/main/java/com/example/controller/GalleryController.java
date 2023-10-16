@@ -3,11 +3,19 @@ package com.example.controller;
 import com.example.service.PictureDataDto;
 import com.example.service.PictureService;
 import com.example.service.SavedPictureDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +23,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
+@RequiredArgsConstructor
 public class GalleryController {
 
-    @Autowired
-    private PictureService pictureService;
-
+    private final PictureService pictureService;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.key}")
+    private String key;
+    @Value("${rabbitmq.exchange}")
+    private String exchange;
     @GetMapping("/")
     public String indexPage(Model model) {
         model.addAttribute("pictures", pictureService.findAll());
@@ -32,10 +44,9 @@ public class GalleryController {
         SavedPictureDto savedPictureDto = pictureService.uploadPicture(file.getOriginalFilename(),
                 file.getContentType(),
                 uploadPictureDto.getPictureDescription(),
-                file.getInputStream());
-        // TODO здесь вам нужно вместо вызова метода обработки
-        // TODO отправить сообщение о том, что картинка загружена и нуждается в обработке
-        pictureService.processPicture(savedPictureDto);
+                file.getInputStream()
+        );
+        rabbitTemplate.convertAndSend(exchange, key, savedPictureDto);
         return "redirect:/";
     }
 

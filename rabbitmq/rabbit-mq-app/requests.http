@@ -1,0 +1,15 @@
+POST http://localhost:8080/send/my.direct.exchange/second.queue
+Content-Type: application/json
+
+{
+  "message": "Some message",
+  "username": "SomeUser"
+}
+###
+POST http://localhost:8080/send/my.fanout.exchange
+Content-Type: application/json
+
+{
+  "message": "Some message",
+  "username": "SomeUser"
+}

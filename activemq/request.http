@@ -1,0 +1,17 @@
+POST http://localhost:8080/send/queue
+Content-Type: application/json
+
+{
+  "message": "Some message",
+  "username": "SomeUser"
+}
+
+###
+
+POST http://localhost:8080/send/topic
+Content-Type: application/json
+
+{
+"message": "Some message",
+"username": "SomeUser"
+}

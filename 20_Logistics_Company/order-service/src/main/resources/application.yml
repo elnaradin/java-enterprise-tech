@@ -1,3 +1,5 @@
+server:
+  port: 8088
 spring:
   application:
     name: order-service
@@ -16,9 +18,20 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
+  sql.init.mode: always
   kafka:
     bootstrap-servers: localhost:9092
     topic: order
+  cloud:
+    stream:
+      function:
+        definition: transactionEventConsumer;orderCreatedEventPublisher
+      bindings:
+        transactionEventConsumer-in-0:
+          destination: transactions
+        orderCreatedEventPublisher-out-0:
+          destination: orders
 management:
   endpoints:
     web:

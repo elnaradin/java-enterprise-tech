@@ -1,0 +1,10 @@
+POST http://localhost:8088/api/order
+Content-Type: application/json
+
+{
+  "description": "gjhghjg",
+  "destinationAddress": "yiuyiyiuy",
+  "departureAddress": "yiuyiyiuy",
+  "cost": 60.0,
+  "userId": 1
+}

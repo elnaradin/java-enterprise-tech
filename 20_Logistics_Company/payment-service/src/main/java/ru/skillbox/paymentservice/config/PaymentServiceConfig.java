@@ -1,32 +1,25 @@
 package ru.skillbox.paymentservice.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.logysticssystemcommon.event.OrderCreatedEvent;
+import com.example.logysticssystemcommon.event.PaymentEvent;
+import com.example.logysticssystemcommon.event.TransactionEvent;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.skillbox.paymentservice.domain.OrderPurchaseEvent;
-import ru.skillbox.paymentservice.domain.PaymentEvent;
-import ru.skillbox.paymentservice.domain.TransactionEvent;
 import ru.skillbox.paymentservice.handler.EventHandler;
 
 import java.util.function.Function;
 
 @Configuration
+@RequiredArgsConstructor
 public class PaymentServiceConfig {
 
     private final EventHandler<PaymentEvent, TransactionEvent> paymentEventHandler;
-    private final EventHandler<OrderPurchaseEvent, PaymentEvent> orderPurchaseEventHandler;
-
-    @Autowired
-    public PaymentServiceConfig(
-            EventHandler<PaymentEvent, TransactionEvent> paymentEventHandler,
-            EventHandler<OrderPurchaseEvent, PaymentEvent> orderPurchaseEventHandler) {
-        this.paymentEventHandler = paymentEventHandler;
-        this.orderPurchaseEventHandler = orderPurchaseEventHandler;
-    }
+    private final EventHandler<OrderCreatedEvent, PaymentEvent> orderCreatedEventHandler;
 
     @Bean
-    public Function<OrderPurchaseEvent, PaymentEvent> orderPurchaseEventProcessor() {
-        return orderPurchaseEventHandler::handleEvent;
+    public Function<OrderCreatedEvent, PaymentEvent> orderEventProcessor() {
+        return orderCreatedEventHandler::handleEvent;
     }
 
     @Bean

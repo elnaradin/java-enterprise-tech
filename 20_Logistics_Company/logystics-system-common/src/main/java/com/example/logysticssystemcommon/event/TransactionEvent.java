@@ -1,21 +1,15 @@
-package ru.skillbox.paymentservice.domain;
+package com.example.logysticssystemcommon.event;
 
-import lombok.Getter;
-import lombok.ToString;
-
-@ToString
-@Getter
 public class TransactionEvent implements Event {
-
     private static final String EVENT = "Transaction";
 
-    private Integer orderId;
+    private Long orderId;
     private TransactionStatus status;
 
     public TransactionEvent() {
     }
 
-    public TransactionEvent orderId(Integer orderId) {
+    public TransactionEvent orderId(Long orderId) {
         this.orderId = orderId;
         return this;
     }
@@ -30,4 +24,19 @@ public class TransactionEvent implements Event {
         return EVENT;
     }
 
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
 }

@@ -1,4 +1,4 @@
-package ru.skillbox.paymentservice.domain;
+package com.example.logysticssystemcommon.event;
 
 public enum TransactionStatus {
 

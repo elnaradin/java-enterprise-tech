@@ -3,13 +3,20 @@ package ru.skillbox.orderservice.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "order_db")
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -27,7 +34,7 @@ public class Order {
     private String destinationAddress;
 
     @Column(name = "cost")
-    private Long cost;
+    private Double cost;
 
     @Column(name = "creation_time")
     private LocalDateTime creationTime;
@@ -43,7 +50,7 @@ public class Order {
             String departureAddress,
             String destinationAddress,
             String description,
-            Long cost,
+            Double cost,
             LocalDateTime enterTime,
             LocalDateTime modifiedTime,
             OrderStatus status

@@ -1,8 +1,8 @@
 version: '3'
 services:
-  psql:
+  order_db:
     image: postgres:latest
-    container_name: server_psql
+    container_name: order_psql
     ports:
       - 5432:5432
     restart: on-failure
@@ -11,7 +11,20 @@ services:
       POSTGRES_PASSWORD: order_password
       POSTGRES_DB: order_db
     volumes:
-      - database-data:/var/lib/postgresql/data/
+      - ./db1_data:/var/lib/postgresql/data/
+
+  payment_db:
+    image: postgres:latest
+    container_name: payment_psql
+    ports:
+      - 5433:5432
+    restart: on-failure
+    environment:
+      POSTGRES_USER: payment_user
+      POSTGRES_PASSWORD: payment_password
+      POSTGRES_DB: payment_db
+    volumes:
+      - ./db2_data:/var/lib/postgresql/data/
 
   zookeeper:
     image: wurstmeister/zookeeper

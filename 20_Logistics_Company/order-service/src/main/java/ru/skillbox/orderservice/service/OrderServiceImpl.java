@@ -1,5 +1,6 @@
 package ru.skillbox.orderservice.service;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,14 @@ import ru.skillbox.orderservice.domain.OrderStatus;
 import ru.skillbox.orderservice.domain.dto.OrderDto;
 import ru.skillbox.orderservice.domain.dto.OrderKafkaDto;
 import ru.skillbox.orderservice.domain.dto.StatusDto;
+import ru.skillbox.orderservice.handler.OrderProcessor;
 import ru.skillbox.orderservice.repository.OrderRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
@@ -22,10 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final KafkaService kafkaService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, KafkaService kafkaService) {
-        this.orderRepository = orderRepository;
-        this.kafkaService = kafkaService;
-    }
+    private final OrderProcessor orderProcessor;
 
     @Override
     public Optional<Order> addOrder(OrderDto orderDto) {
@@ -38,10 +38,10 @@ public class OrderServiceImpl implements OrderService {
                 orderDto.getCost(),
                 dateTime,
                 dateTime,
-                OrderStatus.await
+                OrderStatus.CREATED
         );
         Order order = orderRepository.save(newOrder);
-        kafkaService.produce(OrderKafkaDto.toKafkaDto(order));
+        orderProcessor.process(orderDto, order.getId());
         return Optional.of(order);
     }
 
